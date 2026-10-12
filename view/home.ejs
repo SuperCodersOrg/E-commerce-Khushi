@@ -29,8 +29,8 @@
             <h2> Our Products</h2>
             
             <div class="products-grid" id="products-grid">
-                <% products.forEach((product)=>{%>
-                     <article class="product-card product-item">
+                <!-- <% products.forEach((product)=>{%> -->
+                     <!-- <article class="product-card product-item">
                            <img
                             src="<%= product.images[0] %>"
                             alt="<%= product.title %>"
@@ -43,7 +43,7 @@
                             View Full Details
                         </a>
                     </article>
-                <% }) %>
+                <% }) %> -->
             </div>
             <button type="button" id="loadMoreBtn" class="load-more-btn"> Load More Products</button>
         </section>
@@ -65,38 +65,65 @@
     </div>
 </footer>
 <script>
-    const products = document.querySelectorAll(".product-item");
+    const productGrid=document.getElementById("products-grid")
     const loadMoreBtn = document.getElementById("loadMoreBtn");
-    let visible = 3;
-    products.forEach((product, index) => {
-        if (index >= visible) {
-            product.style.display = "none";
-        }
-    });
-    if (products.length <= visible) {
-        loadMoreBtn.style.display = "none";
-    }
-
+    let fetching=false;
+    let nextCursor=null;
     loadMoreBtn.addEventListener("click", () => {
-        const nextLimit = visible + 3;
-
-        for (
-            let i = visible;
-            i < nextLimit && i < products.length;
-            i++
-        ) {
-            products[i].style.display = "";
+        if(fetching){return;}
+        fetching=true;
+        loadMoreBtn.textContent="loading..";
+loadMoreBtn.disabled=true;
+        let url="/products/load-more"
+         if (nextCursor) {            
+            url += "?cursor=" + nextCursor;
         }
+        console.log(url);
+        fetch(url)
+        .then((response)=>{
+            if(!response.ok){
+                throw new Error ("Unable to get product")
+            }
+            return response.json();
+        })
+        .then((data)=>{
+            console.log(data);
+            data.products.forEach((product)=> {
+                const card= document.createElement("article");
+                card.className="product-card product-item"
+                card.innerHTML=`
+                <img src="${product.images[0]}" alt="${product.title}">
 
-        visible = nextLimit;
-        if (visible >= products.length) {
-            loadMoreBtn.style.display = "none";
-        }
+                        <h3>${product.title }</h3>
+                        <p>₹${ product.price }</p>
+
+                        <a href="/products/${ product._id }">
+                            View Full Details
+                        </a>
+                `;
+            productGrid.appendChild(card);
+            });
+            nextCursor=data.nextCursor;
+           if (!data.moreProduct) {
+                    loadMoreBtn.style.display = "none";
+                } else {
+                    loadMoreBtn.textContent = "Load More";
+                    loadMoreBtn.disabled = false;
+                }
+
+            }).catch((error)=>{
+                console.log(error);
+                loadMoreBtn.textContent="Try again";
+                loadMoreBtn.disabled=false;
+            })
+            .finally(()=>{
+                fetching=false;
+            })
+
+       
+
     });
-</script>
-</body>
-</html>
- 
+
 
 </script>
 </body>
