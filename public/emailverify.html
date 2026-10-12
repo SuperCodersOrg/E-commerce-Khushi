@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification | ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <header>
+        <h2>SHOPEASE</h2>
+        <a href="/public/login.html">Login</a>
+    </header>
+    <main class="email-verify-container">
+        <div class="email-verify-card">
+            <h1>Verify Your Email</h1>
+            <p class="email-verify-subtitle">
+                Enter your email address to receive a verification link
+                and continue creating your ShopEase account.
+            </p>
+            <form action="/auth/send-verification" method="POST">
+                <label for="email">Email Address</label>
+                <input  type="email"id="email"  name="email"  placeholder="example@gmail.com" required>
+                <button type="submit" class="email-verify-button">
+                    Send Verification Link
+                </button>
+            </form>
+            <p class="email-verify-login">
+                Already have an account?
+                <a href="/public/login.html">Login</a>
+            </p>
+        </div>
+    </main>
+     <p id="verification-message"></p>
+</body>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("status") === "sent") {
+        document.getElementById("verification-message").textContent =
+            "Verification email sent. Please check your inbox.";
+    }
+</script>
+</html>

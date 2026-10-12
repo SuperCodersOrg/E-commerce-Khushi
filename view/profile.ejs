@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>My Profile</h1>
+        <a href="/dashboard">Continue Shopping</a>
+    </header>
+
+    <main class="profile-container">
+        <div class="avatar">
+            <%= user.username.charAt(0).toUpperCase() %>
+        </div>
+
+        <h2><%= user.username %></h2>
+
+        <div class="profile-details">
+            <p>
+                <strong>Username:</strong>
+                <%= user.username %>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <%= user.email %>
+            </p>
+        </div>
+
+        <a href="/public/change-password.html" class="profile-button">
+            Change Password
+        </a>
+
+        <a href="/auth/logout" class="profile-button">
+            Logout
+        </a>
+    </main>
+
+</body>
+</html>

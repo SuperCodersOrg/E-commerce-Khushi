@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= product.title %> | ShopEase
+    </title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <header>
+        <h2>SHOPEASE</h2>
+        <nav>
+            <a href="/dashboard">Continue Shopping</a>
+        </nav>
+    </header>
+    <main class="product-details-container">
+        <div class="product-details-image">
+            <img src="<%= product.images[0] %>" alt="<%= product.title %>">
+        </div>
+
+        <div class="product-details-info">
+            <p class="product-category">
+                <%= product.category%>
+            </p>
+            <h1>
+                <%= product.title%>
+            </h1>
+            <p class="product-brand">Brand: <%= product.brand %>
+            </p>
+            <p class="product-price"> ₹<%= product.price %>
+            </p>
+            <p class="product-description">
+                <%= product.description %>
+            </p>
+            <p class="product-stock">
+                <% if (product.stock> 0) { %>
+                    In Stock: <%= product.stock %>
+                        <% } else { %>
+                            Out of Stock
+                            <% } %>
+            </p>
+            <div class="product-attributes">
+                <h3>Product Specifications</h3>
+                <% Object.entries(product.attributes || {}).forEach(([key, value])=> { %>
+                    <div class="attribute-row">
+                        <strong>
+                            <%= key %>:
+                        </strong>
+                        <span>
+                            <%= value %>
+                        </span>
+                    </div>
+                    <% }) %>
+            </div>
+            <a href="/dashboard" class="product-back-button">
+                Back to Products
+            </a>
+        </div>
+    </main>
+</body>
+
+</html>

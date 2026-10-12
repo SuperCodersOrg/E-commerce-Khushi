@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <header>
+        <h2>SHOPEASE</h2>
+        <a href="/">Home</a>
+    </header>
+    <main class="signup-container">
+        <div class="signup-card">
+            <h1>Create Account</h1>
+            <p class="signup-subtitle">Join ShopEase and start exploring.</p>
+            <form action="/auth/complete-signup" method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="username"  name="username"placeholder="Enter your username" required >
+                <label for="password">Password</label>
+                <input type="password" id="password"name="password"   placeholder="Enter your password"  required>
+                <button type="submit" class="signup-button">
+                    Create Account
+                </button>
+            </form>
+            <p class="login-text">
+                Already have an account?
+                <a href="/public/login.html">Login</a>
+            </p>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h2>SHOPEASE</h2>
+        <nav>
+            <span class="icon-placeholder" title="Search">⌕</span>
+            <span class="icon-placeholder" title="Wishlist">♡</span>
+            <span class="icon-placeholder" title="Cart">🛒</span>
+            <a href="/dashboard/profile" class="profile-icon">
+                <%= user.username.charAt(0).toUpperCase() %>
+            </a>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome">
+            <h1>Discover Your Sttyle</h1>
+            <p>Explore Products just picked for you.</p>
+        </section>
+        <section class="products-session">
+            <h2> Our Products</h2>
+            
+            <div class="products-grid" id="products-grid">
+                <% products.forEach((product)=>{%>
+                     <article class="product-card product-item">
+                           <img
+                            src="<%= product.images[0] %>"
+                            alt="<%= product.title %>"
+                        >
+
+                        <h3><%= product.title %></h3>
+                        <p>₹<%= product.price %></p>
+
+                        <a href="/products/<%= product._id %>">
+                            View Full Details
+                        </a>
+                    </article>
+                <% }) %>
+            </div>
+            <button type="button" id="loadMoreBtn" class="load-more-btn"> Load More Products</button>
+        </section>
+    </main>
+    <footer>
+    <div class="footer-content">
+        <h2>SHOPEASE</h2>
+        <p>Your style, your choice.</p>
+    </div>
+
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/dashboard">Products</a>
+        <a href="/dashboard/profile">My Profile</a>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 ShopEase. All rights reserved.</p>
+    </div>
+</footer>
+<script>
+    const products = document.querySelectorAll(".product-item");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    let visible = 3;
+    products.forEach((product, index) => {
+        if (index >= visible) {
+            product.style.display = "none";
+        }
+    });
+    if (products.length <= visible) {
+        loadMoreBtn.style.display = "none";
+    }
+
+    loadMoreBtn.addEventListener("click", () => {
+        const nextLimit = visible + 3;
+
+        for (
+            let i = visible;
+            i < nextLimit && i < products.length;
+            i++
+        ) {
+            products[i].style.display = "";
+        }
+
+        visible = nextLimit;
+        if (visible >= products.length) {
+            loadMoreBtn.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>
+ 
+
+</script>
+</body>
+
+</html>
