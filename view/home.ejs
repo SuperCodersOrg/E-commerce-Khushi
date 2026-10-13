@@ -7,7 +7,6 @@
     <title>ShopEase</title>
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
-
 <body>
     <header>
         <h2>SHOPEASE</h2>
@@ -22,15 +21,15 @@
     </header>
     <main>
         <section class="welcome">
-            <h1>Discover Your Sttyle</h1>
+            <h1>Discover Your Style</h1>
             <p>Explore Products just picked for you.</p>
         </section>
         <section class="products-session">
             <h2> Our Products</h2>
-            
+
             <div class="products-grid" id="products-grid">
                 <!-- <% products.forEach((product)=>{%> -->
-                     <!-- <article class="product-card product-item">
+                <!-- <article class="product-card product-item">
                            <img
                             src="<%= product.images[0] %>"
                             alt="<%= product.title %>"
@@ -49,83 +48,81 @@
         </section>
     </main>
     <footer>
-    <div class="footer-content">
-        <h2>SHOPEASE</h2>
-        <p>Your style, your choice.</p>
-    </div>
+        <div class="footer-content">
+            <h2>SHOPEASE</h2>
+            <p>Your style, your choice.</p>
+        </div>
 
-    <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/dashboard">Products</a>
-        <a href="/dashboard/profile">My Profile</a>
-    </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Products</a>
+            <a href="/dashboard/profile">My Profile</a>
+        </div>
 
-    <div class="footer-bottom">
-        <p>&copy; 2026 ShopEase. All rights reserved.</p>
-    </div>
-</footer>
-<script>
-    const productGrid=document.getElementById("products-grid")
-    const loadMoreBtn = document.getElementById("loadMoreBtn");
-    let fetching=false;
-    let nextCursor=null;
-    loadMoreBtn.addEventListener("click", () => {
-        if(fetching){return;}
-        fetching=true;
-        loadMoreBtn.textContent="loading..";
-loadMoreBtn.disabled=true;
-        let url="/products/load-more"
-         if (nextCursor) {            
-            url += "?cursor=" + nextCursor;
-        }
-        console.log(url);
-        fetch(url)
-        .then((response)=>{
-            if(!response.ok){
-                throw new Error ("Unable to get product")
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShopEase. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const productGrid = document.getElementById("products-grid")
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+        let fetching = false;
+        let nextCursor = null;
+        function loadProducts() {
+            if (fetching) return;
+            fetching = true;
+            loadMoreBtn.textContent = "Loading...";
+            loadMoreBtn.disabled = true;
+            let url = "/products/load-more";
+            if (nextCursor) {
+                url += "?cursor=" + nextCursor;
             }
-            return response.json();
-        })
-        .then((data)=>{
-            console.log(data);
-            data.products.forEach((product)=> {
-                const card= document.createElement("article");
-                card.className="product-card product-item"
-                card.innerHTML=`
-                <img src="${product.images[0]}" alt="${product.title}">
-
-                        <h3>${product.title }</h3>
-                        <p>₹${ product.price }</p>
-
-                        <a href="/products/${ product._id }">
+            fetch(url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Unable to get products");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    data.products.forEach((product) => {
+                        const card = document.createElement("article");
+                        card.className = "product-card product-item";
+                        card.innerHTML = `
+                        <img src="${product.images[0]}"
+                             alt="${product.title}">
+                        <h3>${product.title}</h3>
+                        <p>₹${product.price}</p>
+                        <a href="/products/${product._id}">
                             View Full Details
                         </a>
-                `;
-            productGrid.appendChild(card);
-            });
-            nextCursor=data.nextCursor;
-           if (!data.moreProduct) {
-                    loadMoreBtn.style.display = "none";
-                } else {
-                    loadMoreBtn.textContent = "Load More";
+                    `;
+                        productGrid.appendChild(card);
+                    });
+                    nextCursor = data.nextCursor;
+                    if (!data.moreProduct || data.products.length === 0) {
+                        loadMoreBtn.style.display = "none";
+                    } else {
+                        loadMoreBtn.textContent = "Load More Products";
+                        loadMoreBtn.disabled = false;
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    loadMoreBtn.textContent = "Try Again";
                     loadMoreBtn.disabled = false;
-                }
+                })
+                .finally(() => {
+                    fetching = false;
+                });
+        }
 
-            }).catch((error)=>{
-                console.log(error);
-                loadMoreBtn.textContent="Try again";
-                loadMoreBtn.disabled=false;
-            })
-            .finally(()=>{
-                fetching=false;
-            })
-
-       
-
-    });
+        loadProducts();
+        loadMoreBtn.addEventListener("click", loadProducts);
 
 
-</script>
+
+    </script>
 </body>
 
 </html>

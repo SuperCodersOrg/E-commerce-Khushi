@@ -1,0 +1,127 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <a href="/public/login.html"><button>login</button></a>
+    <a href="/public/signin.html"><button>signin</button></a>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | Home</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+
+    <header>
+        <h2>SHOPEASE</h2>
+        <nav>
+            <a href="/public/login.html">Login</a>
+            <a href="/public/emailverify.html" class="signup-link">Sign Up</a>
+        </nav>
+    </header>
+    <main class="home-container">
+        <section class="hero">
+            <h1>Welcome to ShopEase</h1>
+            <p>
+                Discover your style. Find your favourites.
+                Shop with ease.
+            </p>
+            <a href="/public/login.html" class="home-button">
+                Start Shopping
+            </a>
+        </section>
+      <section class="products-session">
+            <h2> Our Products</h2>
+
+            <div class="products-grid" id="product-grid">
+                    </div>
+            <button type="button" id="loadMoreBtn" class="load-more-btn"> Load More Products</button>
+        </section>
+        <section class="home-info">
+            <div class="info-card">
+                <h3>Latest Trends</h3>
+                <p>Explore styles that match your personality.</p>
+            </div>
+            <div class="info-card">
+                <h3>Easy Shopping</h3>
+                <p>Find your favourite products in one place.</p>
+            </div>
+            <div class="info-card">
+                <h3>Your Style</h3>
+                <p>Choose products that make you feel confident.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShopEase. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+     const productGrid = document.getElementById("product-grid")
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+        let fetching = false;
+        let nextCursor = null;
+        function loadProducts() {
+            if (fetching) return;
+            fetching = true;
+            loadMoreBtn.textContent = "Loading...";
+            loadMoreBtn.disabled = true;
+            let url = "/products/load-more";
+            if (nextCursor) {
+                url += "?cursor=" + nextCursor;
+            }
+            fetch(url)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Unable to get products");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    data.products.forEach((product) => {
+                        const card = document.createElement("article");
+                        card.className = "product-card product-item";
+                        card.innerHTML = `
+                        <img src="${product.images[0]}"
+                             alt="${product.title}">
+                        <h3>${product.title}</h3>
+                        <p>₹${product.price}</p>
+                        <a href="/products/${product._id}">
+                            View Full Details
+                        </a>
+                    `;
+                        productGrid.appendChild(card);
+                    });
+                    nextCursor = data.nextCursor;
+                    if (!data.moreProduct || data.products.length === 0) {
+                        loadMoreBtn.style.display = "none";
+                    } else {
+                        loadMoreBtn.textContent = "Load More Products";
+                        loadMoreBtn.disabled = false;
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    loadMoreBtn.textContent = "Try Again";
+                    loadMoreBtn.disabled = false;
+                })
+                .finally(() => {
+                    fetching = false;
+                });
+        }
+        loadProducts();
+        loadMoreBtn.addEventListener("click", loadProducts);
+    </script>
+</body>
+</html>

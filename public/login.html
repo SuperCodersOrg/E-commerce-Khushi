@@ -34,6 +34,17 @@
             </p>
         </div>
     </main>
+     <p id="verification-message"></p>
+     <script>
+       const params = new URLSearchParams(window.location.search);
+    if (params.get("status") === "invalid") {
+        document.getElementById("verification-message").textContent =
+            "Invalid username or password.";
+            if(params.get("status")==="failed"){
+                 document.getElementById("verification-message").textContent =
+                 "Login failed. Please try again"
+            }
+    }</script>
 </body>
 </html>
 

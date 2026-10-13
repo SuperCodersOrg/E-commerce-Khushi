@@ -162,12 +162,14 @@ const login = (req, res) => {
         .select("+password")
         .then((user) => {
             if (!user) {
-                return res.status(401).send("Invalid username or password.");
+                // return res.status(401).send("Invalid username or password.");
+                 return res.redirect("/public/login.html?status=invalid");
             }
             return bcrypt.compare(password, user.password)
                 .then((isMatch) => {
                     if (!isMatch) {
-                        return res.status(401).send("Invalid username or password.");
+                        // return res.status(401).send("Invalid username or password.");
+                        return res.redirect("/public/login.html?status=invalid");
                     }
                     const accessToken = jwt.sign(
                         { userId: user._id },
@@ -197,7 +199,8 @@ const login = (req, res) => {
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).send("Login failed. Please try again");
+            // res.status(500).send("Login failed. Please try again");
+             return res.redirect("/public/login.html?status=failed");
         })
 
 };
