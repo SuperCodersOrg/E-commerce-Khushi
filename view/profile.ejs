@@ -18,28 +18,27 @@
         <div class="avatar">
             <%= user.username.charAt(0).toUpperCase() %>
         </div>
-
         <h2><%= user.username %></h2>
-
         <div class="profile-details">
             <p>
-                <strong>Username:</strong>
+               <strong>Username:</strong>
                 <%= user.username %>
             </p>
-
             <p>
                 <strong>Email:</strong>
                 <%= user.email %>
             </p>
         </div>
-
         <a href="/public/change-password.html" class="profile-button">
             Change Password
         </a>
-
         <a href="/auth/logout" class="profile-button">
             Logout
         </a>
+         <a href="/dashboard/order-history" class="profile-button">
+            Order History
+        </a>
+
     </main>
 
 </body>

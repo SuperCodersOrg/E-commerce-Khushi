@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart | ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <header>
+        <h2>SHOPEASE</h2>
+        <nav>
+            <a href="/dashboard">Continue Shopping</a>
+        </nav>
+    </header>
+    <main class="cart-container">
+        <h1>My Shopping Cart</h1>
+        <div id="cart-items">
+            <% if (cart && cart.items && cart.items.length> 0) { %>
+                <% cart.items.forEach(function(item) { %>
+                    <% if (item.product) { %>
+                        <div class="cart-item" data-id="<%= item.product._id %>" data-price="<%= item.product.price %>">
+                            <div class="product-details">
+                                <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %>" width="100">
+                                <h3>
+                                    <%= item.product.title %>
+                                </h3>
+                                <p>
+                                    Brand: <%= item.product.brand %>
+                                </p>
+                                <p>
+                                    Price: ₹<%= item.product.price %>
+                                </p>
+                                <div class="quantity-controls">
+                                    <button type="button" class="decrease"> - </button>
+
+                                    <span class="quantity">
+                                        <%= item.quantity %>
+                                    </span>
+                                    <button type="button" class="increase">+ </button>
+                                </div>
+                                <p>
+                                    Subtotal: ₹<span class="subtotal">
+                                        <%= item.product.price * item.quantity %>
+                                    </span>
+                                </p>
+                                <button type="button" class="remove">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <% } %>
+                            <% }); %>
+                                <% } %>
+        </div>
+        <div id="empty-cart" style="display: none;">
+            <h3>Your cart is empty!</h3>
+            <a href="/dashboard">Continue Shopping</a>
+        </div>
+        <div class="cart-summary">
+            <% let total=0 ;if (cart && cart.items) { cart.items.forEach(function(item) { if (item.product) {
+                total=total + (item.product.price * item.quantity); } }); } %>
+
+                <h2>
+                    Total Amount: ₹<span id="total">
+                        <%= total %>
+                    </span>
+                </h2>
+
+        </div>
+
+        <div class="order-actions">
+            <button type="button" id="placeOrderBtn">
+                Place Order
+            </button>
+            <section id="delivery-section" style="display: none">
+                <h2>Delivery Details</h2>
+                <form id="delivery-form">
+                    <label>Contact Number</label>
+                    <input type="tel" id="contact" pattern="[0-9]{10}" maxlength="10" required>
+                    <label>House Number</label>
+                    <input type="text" id="houseNo" required>
+                    <label>Address</label>
+                    <input type="text" id="address" required>
+                    <label>PIN Code</label>
+                    <input type="text" id="pincode" pattern="[0-9]{6}" maxlength="6" required>
+                    <label>City</label>
+                    <input type="text" id="city" required>
+                    <!-- <label>State</label>
+                    <input type="text" id="state" required> -->
+
+                    <label for="state">State</label>
+                    <select id="state" required>
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and
+                            Diu</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Ladakh">Ladakh</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+                    </select>
+
+                    <button type="submit">Generate Bill</button>
+                </form>
+            </section>
+            <section id="order-bill" style="display: none;">
+                <h2>Order Bill</h2>
+                <p id="bill-address"></p>
+                <h3>Products</h3>
+                <div id="bill-items"></div>
+                <p>Subtotal: ₹<span id="bill-subtotal">0</span></p>
+                <p>Tax (5%): ₹<span id="bill-tax">0</span></p>
+                <p>Delivery Charge: ₹<span id="bill-delivery">0</span></p>
+                <h3>Final Total: ₹<span id="bill-total">0</span></h3>
+
+                <div class="payment-options">
+                    <button type="button" id="payNowBtn">Pay Now</button>
+                    <button type="button" id="codBtn">Cash on Delivery</button>
+                </div>
+
+            </section>
+        </div>
+        <p id="message"></p>
+    </main>
+    <script>
+        let cartItems = document.getElementById("cart-items");
+        cartItems.addEventListener("click", function (event) {
+            let button = event.target;
+            if (!button.classList.contains("increase") && !button.classList.contains("decrease") && !button.classList.contains("remove")
+            ) {
+                return;
+            }
+            let item = button.closest(".cart-item");
+            if (!item) {
+                return;
+            }
+            let task;
+            if (button.classList.contains("increase")) {
+                task = "increase";
+            } else if (button.classList.contains("decrease")) {
+                task = "decrease";
+            } else {
+                task = "remove";
+            }
+
+            updateCart(item, task);
+        });
+        async function updateCart(item, task) {
+            let productId = item.getAttribute("data-id");
+            let message = document.getElementById("message");
+            message.innerText = "";
+            try {
+                let response = await fetch("/cart/" + task + "/" + productId, {
+                    method: "POST"
+                });
+                let data = await response.json();
+                if (!response.ok) {
+                    message.innerText = data.message || "Unable to update cart";
+                    return;
+                }
+                if (task === "remove") {
+
+                    item.remove();
+
+                } else {
+                    let quantityElement = item.querySelector(".quantity");
+                    let quantity = Number(quantityElement.innerText);
+
+                    if (task === "increase") {
+                        quantity++;
+                    }
+
+                    if (task === "decrease" && quantity > 1) {
+                        quantity--;
+                    }
+                    quantityElement.innerText = quantity;
+                    let price = Number(item.getAttribute("data-price"));
+                    let subtotal = price * quantity;
+                    item.querySelector(".subtotal").innerText = subtotal;
+
+                }
+                updateTotal();
+                message.innerText = data.message || "Cart updated successfully";
+            } catch (error) {
+                console.log("Cart update error:", error);
+                message.innerText = "Something went wrong. Please try again.";
+            }
+        }
+        function updateTotal() {
+            let items = document.querySelectorAll(".cart-item");
+            let total = 0;
+            items.forEach(function (item) {
+                let subtotal = Number(
+                    item.querySelector(".subtotal").innerText
+                );
+                total += subtotal;
+            });
+            document.querySelector("#total").innerText = total;
+            if (items.length === 0) {
+                document.querySelector("#empty-cart").style.display = "block";
+            } else {
+                document.querySelector("#empty-cart").style.display = "none";
+            }
+        }
+
+        let placeOrderBtn = document.getElementById("placeOrderBtn");
+        let deliverySection = document.getElementById("delivery-section");
+        placeOrderBtn.addEventListener("click", function () {
+            let items = document.querySelectorAll(".cart-item");
+            if (items.length === 0) {
+                document.getElementById("message").innerText =
+                    "Your cart is empty.";
+                return;
+            }
+            deliverySection.style.display = "block";
+        });
+        let deliveryForm = document.getElementById("delivery-form");
+        let orderBill = document.getElementById("order-bill");
+        deliveryForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let contact = document.getElementById("contact").value;
+            let houseNo = document.getElementById("houseNo").value;
+            let address = document.getElementById("address").value;
+            let pincode = document.getElementById("pincode").value;
+            let city = document.getElementById("city").value;
+            let state = document.getElementById("state").value;
+
+            let deliveryAddress = document.getElementById("bill-address");
+
+            deliveryAddress.innerText = "Contact: " + contact + ", Address: " + houseNo + ", " + address +
+                ", " + city + ", " + state + " - " + pincode;
+
+
+            let items = document.querySelectorAll(".cart-item");
+            let billItems = document.getElementById("bill-items");
+
+            billItems.innerHTML = "";
+            let subtotal = 0;
+            items.forEach(function (item) {
+                let title = item.querySelector("h3").innerText;
+                let quantity = item.querySelector(".quantity").innerText;
+
+                let productSubtotal = Number(item.querySelector(".subtotal").innerText);
+                subtotal += productSubtotal;
+                let product = document.createElement("p");
+                product.innerText = title + "|Quantity" + quantity + "|Subtotal:₹" + productSubtotal;
+                billItems.appendChild(product);
+            })
+            let tax = subtotal * 0.05;
+            let delivery = 50;
+            if (subtotal >= 999) {
+                delivery = 0;
+            }
+            let finalTotal = subtotal + tax + delivery;
+
+            document.getElementById("bill-subtotal").innerText =
+                subtotal.toFixed(2);
+
+            document.getElementById("bill-tax").innerText =
+                tax.toFixed(2);
+
+            document.getElementById("bill-delivery").innerText =
+                delivery.toFixed(2);
+
+            document.getElementById("bill-total").innerText =
+                finalTotal.toFixed(2);
+            orderBill.style.display = "block";
+            document.getElementById("message").innerText =
+                "Bill generated successfully.Choose a payment Method";
+
+        })
+        // document.querySelector(".payment-options").addEventListener("click", () => {
+        //     let button = event.target.closest("button");
+        //     if (!button) return;
+        //     let contact = document.getElementById("contact").value.trim();
+        //     let houseNo = document.getElementById("houseNo").value.trim();
+        //     let address = document.getElementById("address").value.trim();
+        //     let pincode = document.getElementById("pincode").value.trim();
+        //     let city = document.getElementById("city").value.trim();
+        //     let state = document.getElementById("state").value;
+
+        //     if (!contact || !houseNo || !address || !pincode || !city || !state) {
+        //         document.getElementById("message").innerText =
+        //             "Please fill in all delivery details.";
+        //         return;
+        //     }
+        //     let fullAddress = houseNo + ", " + address + ", " + city + ", " + state + " - " + pincode;
+        //     let message = document.getElementById("message");
+        //     if (button.id === "payNowBtn") {
+        //         message.innerText = "connected yet.";
+        //         return;
+        //     }
+        //     if (button.id === "codBtn") {
+        //         button.disabled = true;
+        //         message.innerText = "Placing your order...";
+
+
+        //         fetch("/cart/place-order", {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        //             body: JSON.stringify({
+        //                 contact: contact,
+        //                 address: houseNo + "," + address + "," + city + "," + "state" + "-" + pincode,
+        //                 paymentMethod: "COD"
+        //             })
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 if (data.orderId) {
+        //                     document.getElementById("message").innerText =
+        //                         "Order placed successfully!";
+
+        //                     Swal.fire({
+        //                         title: "Order placed successfully!!",
+        //                         icon: "success",
+        //                         confirmButtonText: "Order Confirmed",
+        //                                                    })
+
+        //                     // window.location.href = "/dashboard/profile";
+        //                 } else {
+        //                     document.getElementById("message").innerText =
+        //                         data.message || "Unable to place order.";
+        //                     button.disabled = false;
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.log(error);
+        //                 document.getElementById("message").innerText =
+        //                     "Something went wrong while placing the order.";
+        //                 button.disabled = false;
+        //             })
+        //     }
+        // })
+         document.querySelector(".payment-options").addEventListener("click", async(event) => {
+            let button = event.target.closest("button");
+            if (!button) return;
+            let contact = document.getElementById("contact").value.trim();
+            let houseNo = document.getElementById("houseNo").value.trim();
+            let address = document.getElementById("address").value.trim();
+            let pincode = document.getElementById("pincode").value.trim();
+            let city = document.getElementById("city").value.trim();
+            let state = document.getElementById("state").value;
+
+            if (!contact || !houseNo || !address || !pincode || !city || !state) {
+                document.getElementById("message").innerText =
+                    "Please fill in all delivery details.";
+                return;
+            }
+            let fullAddress = houseNo + ", " + address + ", " + city + ", " + state + " - " + pincode;
+            let message = document.getElementById("message");
+            
+            if (button.id === "codBtn") {
+                button.disabled = true;
+                message.innerText = "Placing your order...";
+
+
+                fetch("/cart/place-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contact: contact,
+                        address: houseNo + "," + address + "," + city + "," + "state" + "-" + pincode,
+                        paymentMethod: "COD"
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.orderId) {
+                            document.getElementById("message").innerText =
+                                "Order placed successfully!";
+
+                            Swal.fire({
+                                title: "Order placed successfully!!",
+                                icon: "success",
+                                confirmButtonText: "Order Confirmed",
+                                                           })
+
+                            // window.location.href = "/dashboard/profile";
+                        } else {
+                            document.getElementById("message").innerText =
+                                data.message || "Unable to place order.";
+                            button.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        document.getElementById("message").innerText =
+                            "Something went wrong while placing the order.";
+                        button.disabled = false;
+                    })
+                    return;
+            }
+            if(button.id==="payNowBtn"){
+                  button.disabled = true;
+    message.innerText = "Opening payment...";
+    try{
+        let response= await fetch("/cart/place-order",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                contact:contact,
+                address:fullAddress,
+                paymentMethod:"Online"
+            })
+        })
+        let data=await response.json();
+        if(!response.ok){
+            message.innertext=data.message||"Unable to create order";
+            button.disabled=false;
+            return;
+        }
+        let options={
+            key:data.key,
+            amount:data.amount,
+            currency:data.currency,
+            name:"ShopEase",
+            description:"Order Payment",
+            order_id:data.razorpayOrderId,
+            handler: async function(paymentResponse){
+                  let verifyResponse = await fetch("/cart/verify-payment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        orderId: data.orderId,
+                        razorpay_order_id: paymentResponse.razorpay_order_id,
+                        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                        razorpay_signature: paymentResponse.razorpay_signature
+                    })
+                });
+                let verifyData= await verifyResponse.json();
+                if(verifyResponse.ok){
+                    await  Swal.fire({
+                        title: "Payment successful!",
+                        icon: "success"
+                    });
+                    window.location.reload(); 
+                } else{
+                    message.innerText= verifyData.message||"Payment verification failde";
+                    button.disabled=false;
+                }
+            },
+            modal:{
+                ondismiss: function(){
+                    message.innerText="Payment cancelled. You can try again."
+                    button.disabled=false;
+                }
+            }
+        }
+        let checkout = new Razorpay(options);
+        checkout.on("payment.failed",function(){
+            message.innerText="Payment failed. please try again";
+            button.disabled=false;
+        })
+        checkout.open();
+
+    }catch (error) {
+        console.log(error);
+        message.innerText = "Something went wrong.";
+        button.disabled = false;
+    }
+
+}
+        })
+    </script>
+
+</body>
+
+</html>

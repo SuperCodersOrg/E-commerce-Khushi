@@ -898,3 +898,399 @@ body > footer .footer-bottom {
 .product-back-button:hover {
     background: #8D7154;
 }
+
+/* Main Container */
+.cart-container {
+    width: 85%;
+    margin: 30px auto;
+}
+
+.cart-container h1 {
+    margin-bottom: 25px;
+}
+
+/* Cart Item */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e3d8ef;
+}
+
+.cart-item img {
+    width: 130px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.product-details h3 {
+    color: #7041a6;
+}
+
+.product-details p {
+    margin: 10px 0;
+}
+
+/* Quantity Buttons */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.quantity-controls button {
+    background-color: white;
+    color: #7041a6;
+    border: 1px solid#8D7154;
+    padding: 7px 13px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.quantity-controls button:hover {
+    background-color:#8D7154;
+    color: white;
+}
+
+/* Remove Button */
+.remove {
+    background-color: #f5e3e8;
+    color: #b83250;
+    border: none;
+    padding: 9px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove:hover {
+    background-color: #b83250;
+    color: white;
+}
+
+/* Total Amount */
+.cart-summary {
+    background-color: white;
+    padding: 20px;
+    text-align: right;
+    border-radius: 8px;
+    margin-top: 25px;
+}
+
+.cart-summary h2 {
+    color: #7041a6;
+}
+
+/* Empty Cart */
+#empty-cart {
+    background-color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#empty-cart a {
+    color: #7041a6;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Message */
+#message {
+    color: #7041a6;
+    margin-top: 15px;
+}/* Place Order Button */
+#placeOrderBtn {
+    background-color: #8D7154;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#placeOrderBtn:hover {
+    background-color: #594735;
+}
+
+/* Delivery Details */
+#delivery-section {
+    max-width: 500px;
+    margin-top: 25px;
+    padding: 25px;
+    background-color: white;
+    border: 1px solid #D8C3AC;
+    border-radius: 8px;
+}
+
+#delivery-section h2 {
+    color: #594735;
+    margin-bottom: 20px;
+}
+
+#delivery-form label {
+    display: block;
+    color: #594735;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+#delivery-form input {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 18px;
+    border: 1px solid #D8C3AC;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#delivery-form input:focus {
+    outline: 1px solid #8D7154;
+}
+
+#delivery-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #C5AD92;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#delivery-form button:hover {
+    background-color: #8D7154;
+}
+
+/* Generated Order Bill */
+#order-bill {
+    max-width: 700px;
+    margin-top: 25px;
+    padding: 25px;
+    background-color: white;
+    border: 1px solid #D8C3AC;
+    border-radius: 8px;
+}
+
+#order-bill h2 {
+    color: #594735;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #D8C3AC;
+}
+
+#order-bill h3 {
+    color: #594735;
+    margin: 20px 0 12px;
+}
+
+#bill-address {
+    background-color: #F5F0E9;
+    padding: 12px;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+}
+
+/* Bill Product Rows */
+#bill-items p {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: #F5F0E9;
+    border-bottom: 1px solid #D8C3AC;
+    color: #594735;
+}
+
+/* Bill Amounts */
+#order-bill > p {
+    margin: 12px 0;
+    color: #594735;
+}
+
+#bill-subtotal,
+#bill-tax,
+#bill-delivery {
+    font-weight: bold;
+}
+
+#bill-total {
+    color: #594735;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#message {
+    color: #8D7154;
+    margin-top: 15px;
+    font-weight: bold;
+}
+/* State dropdown */
+#state {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #C5AD92;
+    border-radius: 6px;
+    background-color: #F9F7F3;
+    color: #594735;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+}
+
+#state:focus {
+    border-color: #8D7154;
+    box-shadow: 0 0 4px rgba(141, 113, 84, 0.3);
+}
+
+
+.payment-options {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+
+.payment-options button {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Pay Now */
+#payNowBtn {
+    background-color: #594735;
+    color: #FFFFFF;
+}
+
+#payNowBtn:hover {
+    background-color: #3F3023;
+}
+
+/* Cash on Delivery */
+#codBtn {
+    background-color: #E8D9C8;
+    color: #594735;
+    border: 1px solid #C5AD92;
+}
+
+#codBtn:hover {
+    background-color: #D8C3A5;
+}
+
+
+#codBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Order History Page */
+
+/* .order-history-page {
+    background-color: #F9F7F3;
+    color: #594735;
+    font-family: Arial, sans-serif;
+    } */
+/* 
+.order-history-page header {
+    background-color: #594735;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-history-page header h2 {
+    margin: 0;
+}
+
+.order-history-page header a {
+    color: white;
+    text-decoration: none;
+    background-color: #8D7154;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.order-history-page header a:hover {
+    background-color: #A58A6D;
+}*/
+
+
+.order-history-page h1 {
+    text-align: center;
+    margin: 30px 0;
+} 
+
+
+.order-history-page #orders-container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+.order-history-page .order-card {
+    background-color: white;
+    border: 1px solid #E8D9C8;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+
+.order-history-page .order-card h3 {
+    color: #8D7154;
+    border-bottom: 1px solid #E8D9C8;
+    padding-bottom: 12px;
+    margin-top: 0;
+    overflow-wrap: anywhere;
+}
+
+
+.order-history-page .order-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 10px 0;
+    overflow-wrap: anywhere;
+}
+
+
+.order-history-page .order-card h4 {
+    margin-top: 20px;
+    color: #594735;
+}
+
+
+.order-history-page > a {
+    display: block;
+    width: fit-content;
+    margin: 25px auto;
+    padding: 11px 20px;
+    background-color: #594735;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.order-history-page > a:hover {
+    background-color: #8D7154;
+}

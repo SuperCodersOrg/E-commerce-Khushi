@@ -8,7 +8,9 @@
         <%= product.title %> | ShopEase
     </title>
     <link rel="stylesheet" href="/public/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <header>
         <h2>SHOPEASE</h2>
@@ -20,7 +22,6 @@
         <div class="product-details-image">
             <img src="<%= product.images[0] %>" alt="<%= product.title %>">
         </div>
-
         <div class="product-details-info">
             <p class="product-category">
                 <%= product.category%>
@@ -55,11 +56,89 @@
                     </div>
                     <% }) %>
             </div>
-            <a href="/dashboard" class="product-back-button">
+            <a href="/" class="product-back-button">
                 Back to Products
             </a>
+            <button type="button" id="addToCart" class="product-back-button" data-product-id="<%=product.id%>"
+                <%=product.stock===0?"disabled":" "%> >Add To Cart</button>
+                <!-- <p id=" cart-message"></p> -->
         </div>
     </main>
+    <script>
+        const cartBtn = document.getElementById("addToCart");
+        // const cartMessage = document.getElementById("cart-message");
+        cartBtn.addEventListener("click", () => {
+            const productId = cartBtn.dataset.productId;
+            console.log(productId);
+            fetch("/cart/load", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ productId })
+            }).then(async response => {
+                console.log("Response status:", response.status);
+                console.log("Response URL:", response.url);
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    data = { message: text };
+                }
+                if (response.status === 401 || response.status === 403) {
+                    Swal.fire({
+                        title: "Login Required",
+                        text: data.message || "Please log in first.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Login",
+                        cancelButtonText: "Cancel"
+                    }).then((result) => {
+                        // window.location.href = "/public/login.html";
+                        if (result.isConfirmed) {
+                            window.location.href = "/public/login.html";
+                        }
+                    });
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "Failed to add product to cart"
+                    );
+                }
+
+                return data;
+            })
+                .then(data => {
+                    //       if (data && cartMessage) {
+                    //     cartMessage.textContent =
+                    //         data.message || "Product added to cart successfully";
+                    // }
+                    if (data === null || data === undefined) {
+                        return;
+                    } Swal.fire({
+                        title: "Added to Cart!",
+                        text: data.message || "Product added to your cart successfully.",
+                        icon: "success",
+                        confirmButtonText: "Continue Shopping",
+                        showCancelButton: true,
+                        cancelButtonText: "View Cart"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            return;
+                        }
+                        window.location.href = "/cart/page";
+
+                    });
+                    //     console.log(cartMessage)
+
+                    // if (cartMessage) {
+                    //     cartMessage.textContent =
+                    //         error.message || "Please try again.";
+                    // }
+                })
+        })
+    </script>
 </body>
 
 </html>

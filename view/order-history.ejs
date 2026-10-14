@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History |ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+
+<body class="order-history-page">
+    <header>
+        <h2>SHOPEASE</h2>
+        <nav>
+            <a href="/dashboard">Continue Shopping</a>
+        </nav>
+    </header>
+    <br><br>
+    <h1>Order History</h1>
+    <div id="orders-container">
+        <%if(orders.length===0){%>
+            <p>You have not placed any orders yet.</p>
+            <%} else{%>
+                <% orders.forEach(function(order){%>
+                    <div class="order-card">
+                        <h3>Order Id :<%=order._id%>
+                        </h3>
+                        <p> Date: <%= order.createdAt.toString()%>
+                        </p>
+                        <p> Total: <%= order.total.toFixed(2)%>
+                        </p>
+                        <p>Payment: <%= order.paymentMethod%>
+                        </p>
+                        <p> Payment Status: <%= order.paymentStatus%>
+                        </p>
+                        <p> Order Status: <%= order.orderStatus%>
+                        </p>
+                        <h4>Products</h4>
+                        <%order.items.forEach(function(item){%>
+                            <p>
+                                <u><%=item.title%>:</u> <br> Quantity :<%=item.quantity%> | Price : ₹<%= item.subtotal.toFixed(2) %>
+                            </p>
+                            <%})%>
+                    </div>
+                    <%})%>
+                        <%}%>
+    </div>
+    <a href="/dashboard/profile">Back to Profile</a>
+</body>
+
+</html>

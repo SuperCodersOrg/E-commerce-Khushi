@@ -14,8 +14,6 @@ router.post("/change-password", authMiddleware, changePassword);
 router.post("/reset-password", resetPassword);
 router.post("/forgot-password", forgotPassword);
 router.post("/refresh-token",refreshAccesToken);
-router.get("/profile", authMiddleware, (req, res) => {
-    res.send(`Welcome! Your user ID is ${req.user.userId}`);
-});
+
 
 module.exports=router;

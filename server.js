@@ -7,11 +7,15 @@ const cookieParser = require("cookie-parser");
 const User=require("./models/user");
 const Product=require("./models/product");
 
-// const cors=require('cors');
+const cors=require('cors');
 const app=express();
 
 app.set("view engine", "ejs");
 app.set("views", "./view");
+app.use(
+    "/cart/razorpay-webhook",
+    express.raw({ type: "application/json" })
+);
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cookieParser());
@@ -69,6 +73,7 @@ app.use("/public", express.static("public"));
 const authRoutes=require('./routes/authroutes');
 const homeRoutes = require("./routes/homeRoutes");
 const productRoutes = require("./routes/product");
+const cartRoutes=require("./routes/cart");
 
 // connectDB();
 
@@ -76,6 +81,7 @@ const productRoutes = require("./routes/product");
 app.use("/products", productRoutes);
 app.use("/dashboard", homeRoutes);
 app.use('/auth',authRoutes);
+app.use("/cart",cartRoutes);
 
 
 // app.listen(port,()=>{

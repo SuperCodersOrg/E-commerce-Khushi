@@ -158,12 +158,12 @@ const login = (req, res) => {
     if (!username || !password) {
         return res.status(400).send("Username and password are required.");
     }
-        User.findOne({ username: username })
+    User.findOne({ username: username })
         .select("+password")
         .then((user) => {
             if (!user) {
                 // return res.status(401).send("Invalid username or password.");
-                 return res.redirect("/public/login.html?status=invalid");
+                return res.redirect("/public/login.html?status=invalid");
             }
             return bcrypt.compare(password, user.password)
                 .then((isMatch) => {
@@ -200,7 +200,7 @@ const login = (req, res) => {
         .catch((error) => {
             console.log(error);
             // res.status(500).send("Login failed. Please try again");
-             return res.redirect("/public/login.html?status=failed");
+            return res.redirect("/public/login.html?status=failed");
         })
 
 };
@@ -230,7 +230,7 @@ const logout = (req, res) => {
     res.clearCookie("refreshToken");
 
     // res.send("Logged out successfully.");
-    res.redirect("/public/index.html");
+    res.redirect("/");
 };
 const forgotPassword = (req, res) => {
     const email = req.body.email;
@@ -291,34 +291,34 @@ const resetPassword = (req, res) => {
     Verification.findOne({
         resetToken: hashedToken,
         resetTokenExpiresAt: { $gt: new Date() }
-    })        .then((verification) => {
-            if (!verification) {
-                return res.status(400).send(
-                    "Reset link is invalid or expired."
-                );
-            }
-            return User.findOne({ email: verification.email })
-                .then((user) => {
-                    if (!user) {
-                        return res.status(404).send("User not found.");
-                    }
+    }).then((verification) => {
+        if (!verification) {
+            return res.status(400).send(
+                "Reset link is invalid or expired."
+            );
+        }
+        return User.findOne({ email: verification.email })
+            .then((user) => {
+                if (!user) {
+                    return res.status(404).send("User not found.");
+                }
 
-                    return bcrypt.hash(password, 10)
-                        .then((hashedPassword) => {
-                            user.password = hashedPassword;
-                            return user.save();
-                        })
-                        .then(() => {
-                            verification.resetToken = null;
-                            verification.resetTokenExpiresAt = null;
-                            return verification.save();
-                        })
-                        .then(() => {
-                            res.clearCookie("signupToken");
-                            return res.redirect("/public/login.html");
-                        });
-                });
-        })
+                return bcrypt.hash(password, 10)
+                    .then((hashedPassword) => {
+                        user.password = hashedPassword;
+                        return user.save();
+                    })
+                    .then(() => {
+                        verification.resetToken = null;
+                        verification.resetTokenExpiresAt = null;
+                        return verification.save();
+                    })
+                    .then(() => {
+                        res.clearCookie("signupToken");
+                        return res.redirect("/public/login.html");
+                    });
+            });
+    })
         .catch((error) => {
             console.log("Reset password error:", error);
             return res.status(500).send("Unable to reset password.");
@@ -348,7 +348,7 @@ const changePassword = (req, res) => {
                             // return res.send(
                             //     "Password changed successfully."
                             // );
-                            return res.redirect("/profile");
+                            return res.redirect("/dashboard/");
                         });
                 });
         })
