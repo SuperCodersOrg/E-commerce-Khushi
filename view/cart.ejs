@@ -394,16 +394,16 @@
 
 
                 fetch("/cart/place-order", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        contact: contact,
-                        address: houseNo + "," + address + "," + city + "," + "state" + "-" + pincode,
-                        paymentMethod: "COD"
-                    })
-                })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        contact: contact,
+        address: houseNo + "," + address + "," + city + "," + state + "-" + pincode,
+        paymentMethod: "COD"
+    })
+})
                     .then(response => response.json())
                     .then(data => {
                         if (data.orderId) {

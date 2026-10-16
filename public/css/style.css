@@ -115,6 +115,29 @@ nav {
     background-color: #8D7154;
 }
 
+
+.category-section {
+    margin: 25px 0;
+}
+
+.category-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.category-links a {
+    padding: 10px 16px;
+    background: #f5e8ef;
+    color: #6f3654;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.category-links a:hover {
+    background: #ead2df;
+}
+
 /* Footer */
 footer {
     background-color: #E8D9C8;

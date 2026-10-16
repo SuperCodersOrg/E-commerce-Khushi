@@ -146,7 +146,7 @@ const completeSignup = (req, res) => {
                 return res.status(400).send(result.error);
             }
             res.clearCookie("signupToken");
-            return res.redirect("/profile");
+            return res.redirect("/dashboard/profile");
         })
         .catch((error) => {
             console.log(error);

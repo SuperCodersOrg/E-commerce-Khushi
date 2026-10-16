@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | ShopEase</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+<header>
+    <h2>SHOPEASE</h2>
+    <nav> <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/products">All Products</a>
+    </nav>
+</header>
+
+<main class="home-container">
+    <h1>Shop by Category</h1>
+    <br>
+    <nav class="category-links">
+        <a href="/products">All Products</a>
+        <a href="/products?category=women-clothing">Women's Clothing</a>
+        <a href="/products?category=men-clothing">Men's Clothing</a>
+        <a href="/products?category=electronics">Electronics</a>
+        <a href="/products?category=cosmetics">Cosmetics</a>
+    </nav>
+
+    <h2> <%= selectedCategory? selectedCategory.replaceAll("-", " "): "All Products" %> </h2>
+    <div class="products-grid">
+        <% if (products.length === 0) { %>
+            <p>No products found in this category.</p>
+        <% } %>
+        <% products.forEach((product) => { %>
+            <article class="product-card">
+                <img src="<%= product.images[0] %>"alt="<%= product.title %>">
+                <h3><%= product.title %></h3>
+                <p>Brand: <%= product.brand %></p>
+                <p>₹<%= product.price %></p>
+                <a href="/products/<%= product._id %>">
+                    View Details
+                </a>
+            </article>
+        <% }) %>
+    </div>
+</main>
+
+</body>
+</html>

@@ -7,6 +7,7 @@
     <title>ShopEase</title>
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
+
 <body>
     <header>
         <h2>SHOPEASE</h2>
@@ -14,6 +15,9 @@
             <span class="icon-placeholder" title="Search">⌕</span>
             <span class="icon-placeholder" title="Wishlist">♡</span>
             <span class="icon-placeholder" title="Cart">
+
+                <a href="/products">Shop by Category</a>
+
                 <a href="/cart/page">🛒</a></span>
             <a href="/dashboard/profile" class="profile-icon">
                 <%= user.username.charAt(0).toUpperCase() %>
@@ -24,7 +28,32 @@
         <section class="welcome">
             <h1>Discover Your Style</h1>
             <p>Explore Products just picked for you.</p>
+
+            <section class="category-section">
+                <h2>Shop by Category</h2>
+                <br>
+
+                <div class="category-links">
+                    <a href="/products?category=women-clothing">
+                        Women's Clothing
+                    </a>
+
+                    <a href="/products?category=men-clothing">
+                        Men's Clothing
+                    </a>
+
+                    <a href="/products?category=electronics">
+                        Electronics
+                    </a>
+
+                    <a href="/products?category=cosmetics">
+                        Cosmetics
+                    </a>
+                </div>
+            </section>
+
         </section>
+
         <section class="products-session">
             <h2> Our Products</h2>
 

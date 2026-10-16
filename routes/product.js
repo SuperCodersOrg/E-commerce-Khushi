@@ -17,7 +17,27 @@ const mongoose = require("mongoose");
 //             });
 //         });
 // });
+router.get("/", (req, res) => {
+    const category = req.query.category;
 
+    const allowedCategories = [ "men-clothing", "women-clothing","electronics","cosmetics" ];
+    let selectedCategory = {};
+    if (category) {
+        if (!allowedCategories.includes(category)) {
+            return res.status(400).send("Invalid category");
+        }
+        selectedCategory.category = category;
+    }
+    Product.find(selectedCategory)
+        .sort({ createdAt: -1 })
+        .then((products) => {
+            res.render("products", {   products, selectedCategory: category || "" });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send("Unable to load products");
+        });
+});
 router.get("/load-more", (req, res) => {
     const limit = 6;
     const cursor = req.query.cursor;
